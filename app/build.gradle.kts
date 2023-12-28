@@ -9,6 +9,7 @@ plugins {
 group = "hexlet.code"
 version = "1.0-SNAPSHOT"
 
+
 application {
     mainClass.set("hexlet.code.App")
 }
@@ -26,4 +27,8 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+tasks.compileJava {
+    options.release.set(20)
 }
