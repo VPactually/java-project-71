@@ -15,9 +15,10 @@ public class Parser {
     public static Map<String, String> parse(String filepath) throws Exception {
         var mapper = new ObjectMapper();
         var map = new TreeMap<String, String>();
-        Path path = Paths.get(filepath);
+        Path path = Paths.get(filepath).toAbsolutePath().normalize();
         File file = path.toFile();
-        map = mapper.readValue(file, new TypeReference<>() {});
+        map = mapper.readValue(file, new TypeReference<>() {
+        });
         return map;
     }
 
