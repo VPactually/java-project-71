@@ -5,9 +5,11 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 
+import java.util.Arrays;
+
 @Command(name = "app", mixinStandardHelpOptions = true, version = "app 1.0",
         description = "This programm do only \"Hello world!\", for now, but later it will works!")
-public class App {
+public class App implements Runnable {
     @Option(names = {"-h", "--help"}, usageHelp = true, description = "display a help message")
     private boolean helpRequest = false;
     @Option(names = {"-V", "--version"}, versionHelp = true, description = "Print version information and exit")
@@ -19,13 +21,15 @@ public class App {
     @Parameters(description = "path to second file")
     private String filepath2;
 
+    public void run() {
+        System.out.println(format);
+        System.out.println(filepath1);
+        System.out.println(filepath2);
+    }
 
     public static void main(String[] args) {
-        if (args.length > 0) {
-            int cli = new CommandLine(new App()).execute(args);
-            System.exit(cli);
-        } else {
-            System.out.println("Hello, World!");
-        }
+        App app = new App();
+        CommandLine cmd = new CommandLine(app);
+        cmd.execute(args);
     }
 }
