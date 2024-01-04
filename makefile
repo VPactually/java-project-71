@@ -1,5 +1,4 @@
 build:
-	chmod +x gradlew
-	./gradlew build
+	ls
 
 .PHONY: build
