@@ -34,5 +34,5 @@ tasks.test {
 }
 
 tasks.compileJava {
-    options.release.set(12)
+    options.release.set(11)
 }
