@@ -16,7 +16,7 @@ public class ProjectTest {
 
     @BeforeAll
     public static void beforeAll() {
-        pathToFile1 = "D:\\Java\\0.Projects\\java-project-71\\app\\src\\test\\resources\\file1.json";
+        pathToFile1 = "src\\test\\resources\\file1.json";
         pathToFile2 = "src\\test\\resources\\file2.json";
     }
 
