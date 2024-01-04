@@ -28,7 +28,6 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.assertj:assertj-core:3.22.0")
 }
-
 tasks.jacocoTestReport { reports { xml.required.set(true) } }
 
 
