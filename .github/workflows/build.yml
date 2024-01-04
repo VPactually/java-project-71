@@ -13,5 +13,14 @@ jobs:
       - uses: gradle/gradle-build-action@v2
         with:
           gradle-version: 8.4
+      - name: Publish code coverage
+        uses: paambaati/codeclimate-action@v5.0.0
+        env:
+          CC_TEST_REPORTER_ID: ${{secrets.CODECLIMATE_API_KEY}}
+          JACOCO_SOURCE_PATH: app/src/main/java
+        with:
+          coverageCommand: make report
+          coverageLocations: ${{github.workspace}}/build/reports/jacoco/test/html/index.html:jacoco
+
       - name: Make build
         run: make build
