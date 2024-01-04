@@ -21,7 +21,7 @@ public class ProjectTest {
     }
 
     @Test
-    public void testParse1()  {
+    public void testParse1() {
         var data1 = new HashMap<>();
         data1.put("host", "hexlet.io");
         data1.put("timeout", "50");
@@ -43,30 +43,26 @@ public class ProjectTest {
 
     @Test
     public void testDiffer1() {
-        String differ1 = """
-                {
-                  - follow: false
-                    host: hexlet.io
-                  - proxy: 123.234.53.22
-                  - timeout: 50
-                  + timeout: 20
-                  + verbose: true
-                }""";
+        String differ1 = "{\n  "
+                + "- follow: false\n  "
+                + "  host: hexlet.io\n  "
+                + "- proxy: 123.234.53.22\n  "
+                + "- timeout: 50\n  "
+                + "+ timeout: 20\n  "
+                + "+ verbose: true\n}";
 
         assertThat(Differ.generate(Parser.parse(pathToFile1), Parser.parse(pathToFile2))).isEqualTo(differ1);
     }
 
     @Test
     public void testDiffer2() {
-        String differ2 = """
-                {
-                  + follow: false
-                    host: hexlet.io
-                  + proxy: 123.234.53.22
-                  - timeout: 20
-                  + timeout: 50
-                  - verbose: true
-                }""";
+        String differ2 = "{\n  "
+                + "+ follow: false\n  "
+                + "  host: hexlet.io\n  "
+                + "+ proxy: 123.234.53.22\n  "
+                + "- timeout: 20\n  "
+                + "+ timeout: 50\n  "
+                + "- verbose: true\n}";
 
         assertThat(Differ.generate(Parser.parse(pathToFile2), Parser.parse(pathToFile1))).isEqualTo(differ2);
     }
