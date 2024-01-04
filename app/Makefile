@@ -1,8 +1,5 @@
-# Makefile for the "app" project
+.PHONY: build
 
-EXECUTABLE=./build/install/app/bin/app
-
-all: run-dist
-
-run-dist:
-	$(EXECUTABLE)
+build:
+	chmod +x gradlew
+	./gradlew build
