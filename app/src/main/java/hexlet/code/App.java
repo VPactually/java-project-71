@@ -5,8 +5,6 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 
-import java.util.Arrays;
-import java.util.Map;
 import java.util.concurrent.Callable;
 
 @Command(name = "app", mixinStandardHelpOptions = true, version = "app 1.0",
@@ -21,15 +19,11 @@ public class App implements Callable<String> {
 
     @Override
     public String call() {
-        try {
-            var data1 = Parser.parse(filepath1);
-            var data2 = Parser.parse(filepath2);
-            var genDiff = Differ.generate(data1, data2);
-            System.out.append(genDiff);
-            return genDiff;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        var data1 = Parser.parse(filepath1);
+        var data2 = Parser.parse(filepath2);
+        var genDiff = Differ.generate(data1, data2);
+        System.out.println(genDiff);
+        return genDiff;
     }
 
     public static void main(String[] args) {
