@@ -1,4 +1,4 @@
 build:
-	./gradlew build
+	ls -la
 
 .PHONY: build
