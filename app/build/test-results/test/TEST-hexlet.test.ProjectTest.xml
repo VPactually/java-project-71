@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="hexlet.test.ProjectTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2024-01-05T00:00:03" hostname="DESKTOP-IM4AOCV" time="0.919">
+  <properties/>
+  <testcase name="testDiffer1()" classname="hexlet.test.ProjectTest" time="0.863"/>
+  <testcase name="testDiffer2()" classname="hexlet.test.ProjectTest" time="0.013"/>
+  <testcase name="testParse1()" classname="hexlet.test.ProjectTest" time="0.025"/>
+  <testcase name="testParse2()" classname="hexlet.test.ProjectTest" time="0.008"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
