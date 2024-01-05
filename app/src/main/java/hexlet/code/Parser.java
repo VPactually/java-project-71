@@ -15,7 +15,7 @@ public class Parser {
         return Paths.get(filepath).toAbsolutePath().normalize().toFile();
     }
 
-    public static Map<String, String> parse(String filepath) {
+    public static Map<String, Object> parse(String filepath) {
         var mapper = new ObjectMapper(new YAMLFactory());
         File file = toFile(filepath);
         try {

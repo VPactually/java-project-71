@@ -29,10 +29,10 @@ public class App implements Callable<String> {
     public static void main(String[] args) {
         App app = new App();
         CommandLine cmd = new CommandLine(app);
-        cmd.execute(args);
+//        cmd.execute(args);
 
-//        cmd.execute("D:\\Java\\0.Projects\\java-project-71\\app\\src\\main\\resources\\file1.json",
-//                "src\\main\\resources\\file2.json");
+        cmd.execute("D:\\Java\\0.Projects\\java-project-71\\app\\src\\main\\resources\\file1.json",
+                "src\\main\\resources\\file2.json");
 
 //        cmd.execute("D:\\Java\\0.Projects\\java-project-71\\app\\src\\main\\resources\\file1.yml",
 //                "src\\main\\resources\\file2.yml");
