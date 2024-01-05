@@ -2,27 +2,29 @@ package hexlet.code;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
-import java.util.TreeMap;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 public class Parser {
+
+    public static File toFile(String filepath) {
+        return Paths.get(filepath).toAbsolutePath().normalize().toFile();
+    }
+
     public static Map<String, String> parse(String filepath) {
-        var mapper = new ObjectMapper();
-        var map = new TreeMap<String, String>();
-        Path path = Paths.get(filepath).toAbsolutePath().normalize();
-        File file = path.toFile();
+        var mapper = new ObjectMapper(new YAMLFactory());
+        File file = toFile(filepath);
         try {
-            map = mapper.readValue(file, new TypeReference<>() {
+            return mapper.readValue(file, new TypeReference<>() {
             });
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return map;
+
     }
 
 }

@@ -30,7 +30,11 @@ public class App implements Callable<String> {
         App app = new App();
         CommandLine cmd = new CommandLine(app);
         cmd.execute(args);
-//        cmd.execute("D:\\Java\\0.Projects\\java-project-71\\app\\src\\main\\java\\hexlet\\code\\files\\file1.json",
-//                "src\\main\\java\\hexlet\\code\\files\\file2.json");
+
+//        cmd.execute("D:\\Java\\0.Projects\\java-project-71\\app\\src\\main\\resources\\file1.json",
+//                "src\\main\\resources\\file2.json");
+
+//        cmd.execute("D:\\Java\\0.Projects\\java-project-71\\app\\src\\main\\resources\\file1.yml",
+//                "src\\main\\resources\\file2.yml");
     }
 }
