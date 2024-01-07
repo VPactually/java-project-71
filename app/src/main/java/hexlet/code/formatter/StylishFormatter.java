@@ -10,8 +10,7 @@ public class StylishFormatter implements DifferFormatter {
 
     @Override
     public String format(List<Map<String, Object>> result) {
-        var sb = new StringBuilder();
-        sb.append("{\n");
+        var sb = new StringBuilder("{\n");
         result.forEach(map -> map.forEach((key, value) -> {
             if (!key.equals("STATUS")) {
                 return;
