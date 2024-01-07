@@ -2,14 +2,16 @@ package hexlet.test;
 
 import hexlet.code.Differ;
 import hexlet.code.Parser;
+import hexlet.code.formatter.StylishFormatter;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.LinkedHashMap;
+
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -30,6 +32,7 @@ public class ProjectTest {
         pathToFileYml2 = "src/test/resources/file2.yml";
         pathToFileYml3 = "src/test/resources/file3.yml";
     }
+
     @Test
     public void testParse1() {
         var data1 = new HashMap<>();
@@ -49,6 +52,7 @@ public class ProjectTest {
         assertThat(Parser.parse(pathToFileJson1)).isEqualTo(data1);
         assertThat(Parser.parse(pathToFileYml1)).isEqualTo(data1);
     }
+
     @Test
     public void testParse2() {
         var data2 = new HashMap<>();
@@ -69,10 +73,12 @@ public class ProjectTest {
         assertThat(Parser.parse(pathToFileJson2)).isEqualTo(data2);
         assertThat(Parser.parse(pathToFileYml2)).isEqualTo(data2);
     }
+
     @Test
     public void testParse3() {
         assertThrows(RuntimeException.class, () -> Parser.parse(pathToFileYml3));
     }
+
     @Test
     public void testDiffer() {
         var expected = "{\n"
@@ -105,4 +111,28 @@ public class ProjectTest {
         assertThat(actual).isEqualTo(expected);
     }
 
+    @Test
+    public void testStylish() {
+        String expected = "{\n  - timeout: 50\n  + timeout: 20\n  + chars4: a,b,c\n"
+                + "  - key1: value1\n    chars1: a, b, c\n}";
+        var res = new StylishFormatter();
+        String actual = res.format(List.of(
+                Map.of("FIELD", "timeout", "STATUS", "UPDATED",
+                        "NEW_VALUE", 20, "OLD_VALUE", 50),
+                Map.of("FIELD", "chars4", "STATUS", "ADDED",
+                        "NEW_VALUE", "a,b,c", "OLD_VALUE", "null"),
+                Map.of("FIELD", "key1", "STATUS", "REMOVED",
+                        "NEW_VALUE", "null", "OLD_VALUE", "value1"),
+                Map.of("FIELD", "chars1", "STATUS", "SAME",
+                        "NEW_VALUE", "a, b, c", "OLD_VALUE", "a, b, c")));
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    public void testStylishException() {
+        var actual = new StylishFormatter();
+        assertThrows(IllegalArgumentException.class, () -> actual.format(List.of(
+                Map.of("FIELD", "key1", "STATUS", "IDONTKNOW",
+                        "NEW_VALUE", "null", "OLD_VALUE", "value1"))));
+    }
 }
