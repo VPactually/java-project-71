@@ -1,34 +1,44 @@
 package hexlet.code;
 
+import hexlet.code.formatter.PlainFormatter;
+import hexlet.code.formatter.StylishFormatter;
+
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.List;
+import java.util.ArrayList;
+
 
 public class Differ {
-    private static void stylishFormat(StringBuilder sb, String key, String indicator, Object value) {
-        sb.append(String.format("  %s %s: %s\n", indicator, key, value));
+    public static Map<String, Object> toMap(String key, String status, Object oldValue, Object newValue) {
+        var res = new TreeMap<String, Object>();
+        res.put("FIELD", key);
+        res.put("STATUS", status);
+        res.put("OLD_VALUE", oldValue);
+        res.put("NEW_VALUE", newValue);
+        return res;
     }
 
     public static String generate(Map<String, Object> data1, Map<String, Object> data2) {
-        StringBuilder sb = new StringBuilder();
         Set<String> keys = new TreeSet<>(data1.keySet());
+        List<Map<String, Object>> result = new ArrayList<>();
         keys.addAll(data2.keySet());
-        sb.append("{\n");
         keys.forEach(key -> {
-            Object value1 = data1.get(key);
-            Object value2 = data2.get(key);
+            var v1 = data1.get(key);
+            var v2 = data2.get(key);
             if (!data1.containsKey(key)) {
-                stylishFormat(sb, key, "+", value2);
+                result.add(toMap(key, "ADDED", v1, v2));
             } else if (!data2.containsKey(key)) {
-                stylishFormat(sb, key, "-", value1);
-            } else if (value1 == null || !value1.equals(value2)) {
-                stylishFormat(sb, key, "-", value1);
-                stylishFormat(sb, key, "+", value2);
+                result.add(toMap(key, "REMOVED", v1, v2));
+            } else if (v1 == null || !v1.equals(v2)) {
+                result.add(toMap(key, "UPDATED", v1, v2));
             } else {
-                stylishFormat(sb, key, " ", value1);
+                result.add(toMap(key, "SAME", v1, v2));
             }
         });
-        sb.append("}");
-        return sb.toString();
+        var genDiff = App.getFormat().equals("stylish") ? new StylishFormatter() : new PlainFormatter();
+        return genDiff.format(result);
     }
 }
