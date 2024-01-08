@@ -1,7 +1,7 @@
 package hexlet.code;
 
-import hexlet.code.formatter.PlainFormatter;
-import hexlet.code.formatter.StylishFormatter;
+import hexlet.code.formatters.PlainFormatter;
+import hexlet.code.formatters.StylishFormatter;
 
 import java.util.Map;
 import java.util.Set;
@@ -21,7 +21,7 @@ public class Differ {
         return res;
     }
 
-    public static String generate(Map<String, Object> data1, Map<String, Object> data2) {
+    public static String generate(Map<String, Object> data1, Map<String, Object> data2, String style) {
         Set<String> keys = new TreeSet<>(data1.keySet());
         List<Map<String, Object>> result = new ArrayList<>();
         keys.addAll(data2.keySet());
@@ -38,7 +38,7 @@ public class Differ {
                 result.add(toMap(key, "SAME", v1, v2));
             }
         });
-        var genDiff = App.getFormat().equals("stylish") ? new StylishFormatter() : new PlainFormatter();
+        var genDiff = style.equals("stylish") ? new StylishFormatter() : new PlainFormatter();
         return genDiff.format(result);
     }
 }

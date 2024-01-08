@@ -23,7 +23,7 @@ public class App implements Callable<String> {
     public String call() {
         var data1 = Parser.parse(filepath1);
         var data2 = Parser.parse(filepath2);
-        var genDiff = Differ.generate(data1, data2);
+        var genDiff = Differ.generate(data1, data2, format);
         System.out.println(genDiff);
         return genDiff;
     }

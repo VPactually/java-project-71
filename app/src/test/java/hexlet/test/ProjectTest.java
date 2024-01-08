@@ -2,7 +2,8 @@ package hexlet.test;
 
 import hexlet.code.Differ;
 import hexlet.code.Parser;
-import hexlet.code.formatter.StylishFormatter;
+import hexlet.code.formatters.PlainFormatter;
+import hexlet.code.formatters.StylishFormatter;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -23,6 +24,7 @@ public class ProjectTest {
     private static String pathToFileYml1;
     private static String pathToFileYml2;
     private static String pathToFileYml3;
+    private static List<Map<String, Object>> list;
 
     @BeforeAll
     public static void beforeAll() {
@@ -31,6 +33,23 @@ public class ProjectTest {
         pathToFileYml1 = "src/test/resources/file1.yml";
         pathToFileYml2 = "src/test/resources/file2.yml";
         pathToFileYml3 = "src/test/resources/file3.yml";
+        list = List.of(
+                Map.of("FIELD", "timeout",
+                        "STATUS", "UPDATED",
+                        "NEW_VALUE", 20,
+                        "OLD_VALUE", 50),
+                Map.of("FIELD", "chars4",
+                        "STATUS", "ADDED",
+                        "NEW_VALUE", new ArrayList<>(List.of("a", "b", "c")),
+                        "OLD_VALUE", "null"),
+                Map.of("FIELD", "key1",
+                        "STATUS", "REMOVED",
+                        "NEW_VALUE", "null",
+                        "OLD_VALUE", "value1"),
+                Map.of("FIELD", "chars1",
+                        "STATUS", "SAME",
+                        "NEW_VALUE", new ArrayList<>(List.of("a", "b", "c")),
+                        "OLD_VALUE", new ArrayList<>(List.of("a", "b", "c"))));
     }
 
     @Test
@@ -80,7 +99,50 @@ public class ProjectTest {
     }
 
     @Test
-    public void testDiffer() {
+    public void testStylish() {
+        String expected = "{\n  - timeout: 50\n  + timeout: 20\n  + chars4: [a, b, c]\n"
+                + "  - key1: value1\n    chars1: [a, b, c]\n}";
+        var res = new StylishFormatter();
+        String actual = res.format(list);
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    public void testStylishException() {
+        var actual = new StylishFormatter();
+        assertThrows(IllegalArgumentException.class, () -> actual.format(List.of(
+                Map.of("FIELD", "key1", "STATUS", "IDONTKNOW",
+                        "NEW_VALUE", "null", "OLD_VALUE", "value1"))));
+    }
+
+    @Test
+    public void testPlain() {
+        var res = new PlainFormatter();
+        String actual = res.format(list);
+        String expected = "Property 'timeout' was updated. From 50 to 20\n"
+                + "Property 'chars4' was added with value: [complex value]\n"
+                + "Property 'key1' was removed\n";
+
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    public void testPlainException() {
+        var actual = new PlainFormatter();
+        assertThrows(IllegalArgumentException.class, () -> actual.format(List.of(
+                Map.of("FIELD", "key1", "STATUS", "IDONTKNOW",
+                        "NEW_VALUE", "null", "OLD_VALUE", "value1"))));
+    }
+
+    @Test
+    public void testValid() {
+        var res = new PlainFormatter();
+        var actual = res.valid(null, new ArrayList<>(List.of(String.class)));
+        assertThat(actual).isEqualTo(null);
+    }
+
+    @Test
+    public void testDifferStylish() {
         var expected = "{\n"
                 + "    chars1: [a, b, c]\n"
                 + "  - chars2: [d, e, f]\n"
@@ -106,33 +168,29 @@ public class ProjectTest {
                 + "  - setting3: true\n"
                 + "  + setting3: none\n"
                 + "}";
-        var actual = Differ.generate(Parser.parse(pathToFileJson1), Parser.parse(pathToFileJson2));
+        var actual = Differ.generate(Parser.parse(pathToFileJson1), Parser.parse(pathToFileJson2), "stylish");
 
         assertThat(actual).isEqualTo(expected);
     }
 
     @Test
-    public void testStylish() {
-        String expected = "{\n  - timeout: 50\n  + timeout: 20\n  + chars4: a,b,c\n"
-                + "  - key1: value1\n    chars1: a, b, c\n}";
-        var res = new StylishFormatter();
-        String actual = res.format(List.of(
-                Map.of("FIELD", "timeout", "STATUS", "UPDATED",
-                        "NEW_VALUE", 20, "OLD_VALUE", 50),
-                Map.of("FIELD", "chars4", "STATUS", "ADDED",
-                        "NEW_VALUE", "a,b,c", "OLD_VALUE", "null"),
-                Map.of("FIELD", "key1", "STATUS", "REMOVED",
-                        "NEW_VALUE", "null", "OLD_VALUE", "value1"),
-                Map.of("FIELD", "chars1", "STATUS", "SAME",
-                        "NEW_VALUE", "a, b, c", "OLD_VALUE", "a, b, c")));
-        assertThat(actual).isEqualTo(expected);
-    }
+    public void testDifferPlain() {
+        var expected = "Property 'chars2' was updated. From [complex value] to false\n"
+                + "Property 'checked' was updated. From false to true\n"
+                + "Property 'default' was updated. From null to [complex value]\n"
+                + "Property 'id' was updated. From 45 to null\n"
+                + "Property 'key1' was removed\n"
+                + "Property 'key2' was added with value: 'value2'\n"
+                + "Property 'numbers2' was updated. From [complex value] to [complex value]\n"
+                + "Property 'numbers3' was removed\n"
+                + "Property 'numbers4' was added with value: [complex value]\n"
+                + "Property 'obj1' was added with value: [complex value]\n"
+                + "Property 'setting1' was updated. From 'Some value' to 'Another value'\n"
+                + "Property 'setting2' was updated. From 200 to 300\n"
+                + "Property 'setting3' was updated. From true to 'none'\n";
 
-    @Test
-    public void testStylishException() {
-        var actual = new StylishFormatter();
-        assertThrows(IllegalArgumentException.class, () -> actual.format(List.of(
-                Map.of("FIELD", "key1", "STATUS", "IDONTKNOW",
-                        "NEW_VALUE", "null", "OLD_VALUE", "value1"))));
+        var actual = Differ.generate(Parser.parse(pathToFileJson1), Parser.parse(pathToFileJson2), "plain");
+
+        assertThat(actual).isEqualTo(expected);
     }
 }
