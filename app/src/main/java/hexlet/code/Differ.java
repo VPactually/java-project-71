@@ -1,5 +1,6 @@
 package hexlet.code;
 
+import hexlet.code.formatters.jsonFormatter.JsonFormatter;
 import hexlet.code.formatters.plainFormatter.PlainFormatter;
 import hexlet.code.formatters.stylishFormatter.StylishFormatter;
 
@@ -38,7 +39,13 @@ public class Differ {
                 result.add(toMap(key, "SAME", v1, v2));
             }
         });
-        var genDiff = style.equals("stylish") ? new StylishFormatter() : new PlainFormatter();
-        return genDiff.format(result);
+        switch (style) {
+            case "plain":
+                return new PlainFormatter().format(result);
+            case "json":
+                return new JsonFormatter().format(result);
+            default:
+                return new StylishFormatter().format(result);
+        }
     }
 }

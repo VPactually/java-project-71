@@ -1,7 +1,10 @@
 package hexlet.test;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.Differ;
 import hexlet.code.Parser;
+import hexlet.code.formatters.jsonFormatter.JsonFormatter;
 import hexlet.code.formatters.plainFormatter.PlainFormatter;
 import hexlet.code.formatters.stylishFormatter.StylishFormatter;
 import org.junit.jupiter.api.BeforeAll;
@@ -51,6 +54,85 @@ public class ProjectTest {
                         "NEW_VALUE", new ArrayList<>(List.of("a", "b", "c")),
                         "OLD_VALUE", new ArrayList<>(List.of("a", "b", "c"))));
     }
+
+    @Test
+    public void testStylishException() {
+        var actual = new StylishFormatter();
+        assertThrows(IllegalArgumentException.class, () -> actual.format(List.of(
+                Map.of("FIELD", "key1", "STATUS", "IDONTKNOW",
+                        "NEW_VALUE", "null", "OLD_VALUE", "value1"))));
+    }
+
+    @Test
+    public void testPlainException() {
+        var actual = new PlainFormatter();
+        assertThrows(IllegalArgumentException.class, () -> actual.format(List.of(
+                Map.of("FIELD", "key1", "STATUS", "IDONTKNOW",
+                        "NEW_VALUE", "null", "OLD_VALUE", "value1"))));
+    }
+
+    @Test
+    public void testDifferStylish() {
+        var expected = "{\n"
+                + "    chars1: [a, b, c]\n"
+                + "  - chars2: [d, e, f]\n"
+                + "  + chars2: false\n"
+                + "  - checked: false\n"
+                + "  + checked: true\n"
+                + "  - default: null\n"
+                + "  + default: [value1, value2]\n"
+                + "  - id: 45\n"
+                + "  + id: null\n"
+                + "  - key1: value1\n"
+                + "  + key2: value2\n"
+                + "    numbers1: [1, 2, 3, 4]\n"
+                + "  - numbers2: [2, 3, 4, 5]\n"
+                + "  + numbers2: [22, 33, 44, 55]\n"
+                + "  - numbers3: [3, 4, 5]\n"
+                + "  + numbers4: [4, 5, 6]\n"
+                + "  + obj1: {nestedKey=value, isNested=true}\n"
+                + "  - setting1: Some value\n"
+                + "  + setting1: Another value\n"
+                + "  - setting2: 200\n"
+                + "  + setting2: 300\n"
+                + "  - setting3: true\n"
+                + "  + setting3: none\n"
+                + "}";
+        var actual = Differ.generate(Parser.parse(pathToFileJson1), Parser.parse(pathToFileJson2), "stylish");
+
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    public void testDifferPlain() {
+        var expected = "Property 'chars2' was updated. From [complex value] to false\n"
+                + "Property 'checked' was updated. From false to true\n"
+                + "Property 'default' was updated. From null to [complex value]\n"
+                + "Property 'id' was updated. From 45 to null\n"
+                + "Property 'key1' was removed\n"
+                + "Property 'key2' was added with value: 'value2'\n"
+                + "Property 'numbers2' was updated. From [complex value] to [complex value]\n"
+                + "Property 'numbers3' was removed\n"
+                + "Property 'numbers4' was added with value: [complex value]\n"
+                + "Property 'obj1' was added with value: [complex value]\n"
+                + "Property 'setting1' was updated. From 'Some value' to 'Another value'\n"
+                + "Property 'setting2' was updated. From 200 to 300\n"
+                + "Property 'setting3' was updated. From true to 'none'\n";
+
+        var actual = Differ.generate(Parser.parse(pathToFileJson1), Parser.parse(pathToFileJson2), "plain");
+
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    public void testDifferJson() throws JsonProcessingException {
+        var mapper = new ObjectMapper();
+        var expected = mapper.writeValueAsString(list);
+        var actual = new JsonFormatter().format(list);
+
+        assertThat(actual).isEqualTo(expected);
+    }
+
 
     @Test
     public void testParse1() {
@@ -108,14 +190,6 @@ public class ProjectTest {
     }
 
     @Test
-    public void testStylishException() {
-        var actual = new StylishFormatter();
-        assertThrows(IllegalArgumentException.class, () -> actual.format(List.of(
-                Map.of("FIELD", "key1", "STATUS", "IDONTKNOW",
-                        "NEW_VALUE", "null", "OLD_VALUE", "value1"))));
-    }
-
-    @Test
     public void testPlain() {
         var res = new PlainFormatter();
         String actual = res.format(list);
@@ -127,70 +201,10 @@ public class ProjectTest {
     }
 
     @Test
-    public void testPlainException() {
-        var actual = new PlainFormatter();
-        assertThrows(IllegalArgumentException.class, () -> actual.format(List.of(
-                Map.of("FIELD", "key1", "STATUS", "IDONTKNOW",
-                        "NEW_VALUE", "null", "OLD_VALUE", "value1"))));
-    }
-
-    @Test
     public void testValid() {
         var res = new PlainFormatter();
         var actual = res.valid(null, new ArrayList<>(List.of(String.class)));
         assertThat(actual).isEqualTo(null);
     }
 
-    @Test
-    public void testDifferStylish() {
-        var expected = "{\n"
-                + "    chars1: [a, b, c]\n"
-                + "  - chars2: [d, e, f]\n"
-                + "  + chars2: false\n"
-                + "  - checked: false\n"
-                + "  + checked: true\n"
-                + "  - default: null\n"
-                + "  + default: [value1, value2]\n"
-                + "  - id: 45\n"
-                + "  + id: null\n"
-                + "  - key1: value1\n"
-                + "  + key2: value2\n"
-                + "    numbers1: [1, 2, 3, 4]\n"
-                + "  - numbers2: [2, 3, 4, 5]\n"
-                + "  + numbers2: [22, 33, 44, 55]\n"
-                + "  - numbers3: [3, 4, 5]\n"
-                + "  + numbers4: [4, 5, 6]\n"
-                + "  + obj1: {nestedKey=value, isNested=true}\n"
-                + "  - setting1: Some value\n"
-                + "  + setting1: Another value\n"
-                + "  - setting2: 200\n"
-                + "  + setting2: 300\n"
-                + "  - setting3: true\n"
-                + "  + setting3: none\n"
-                + "}";
-        var actual = Differ.generate(Parser.parse(pathToFileJson1), Parser.parse(pathToFileJson2), "stylish");
-
-        assertThat(actual).isEqualTo(expected);
-    }
-
-    @Test
-    public void testDifferPlain() {
-        var expected = "Property 'chars2' was updated. From [complex value] to false\n"
-                + "Property 'checked' was updated. From false to true\n"
-                + "Property 'default' was updated. From null to [complex value]\n"
-                + "Property 'id' was updated. From 45 to null\n"
-                + "Property 'key1' was removed\n"
-                + "Property 'key2' was added with value: 'value2'\n"
-                + "Property 'numbers2' was updated. From [complex value] to [complex value]\n"
-                + "Property 'numbers3' was removed\n"
-                + "Property 'numbers4' was added with value: [complex value]\n"
-                + "Property 'obj1' was added with value: [complex value]\n"
-                + "Property 'setting1' was updated. From 'Some value' to 'Another value'\n"
-                + "Property 'setting2' was updated. From 200 to 300\n"
-                + "Property 'setting3' was updated. From true to 'none'\n";
-
-        var actual = Differ.generate(Parser.parse(pathToFileJson1), Parser.parse(pathToFileJson2), "plain");
-
-        assertThat(actual).isEqualTo(expected);
-    }
 }
