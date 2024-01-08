@@ -1,28 +1,51 @@
 package hexlet.code;
 
-import java.util.HashSet;
+import hexlet.code.formatters.jsonFormatter.JsonFormatter;
+import hexlet.code.formatters.plainFormatter.PlainFormatter;
+import hexlet.code.formatters.stylishFormatter.StylishFormatter;
+
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.List;
+import java.util.ArrayList;
+
 
 public class Differ {
-    public static String generate(Map<String, String> data1, Map<String, String> data2) {
-        StringBuilder sb = new StringBuilder();
-        var set = new TreeSet<>(data1.keySet());
-        set.addAll(data2.keySet());
-        sb.append("{\n");
-        for (var key : set) {
+    public static Map<String, Object> toMap(String key, String status, Object oldValue, Object newValue) {
+        var res = new TreeMap<String, Object>();
+        res.put("FIELD", key);
+        res.put("STATUS", status);
+        res.put("OLD_VALUE", oldValue);
+        res.put("NEW_VALUE", newValue);
+        return res;
+    }
+
+    public static String generate(Map<String, Object> data1, Map<String, Object> data2, String style) {
+        Set<String> keys = new TreeSet<>(data1.keySet());
+        List<Map<String, Object>> result = new ArrayList<>();
+        keys.addAll(data2.keySet());
+        keys.forEach(key -> {
+            var v1 = data1.get(key);
+            var v2 = data2.get(key);
             if (!data1.containsKey(key)) {
-                sb.append("  + ").append(key).append(": ").append(data2.get(key)).append("\n");
+                result.add(toMap(key, "ADDED", v1, v2));
             } else if (!data2.containsKey(key)) {
-                sb.append("  - ").append(key).append(": ").append(data1.get(key)).append("\n");
-            } else if (data1.get(key).equals(data2.get(key))) {
-                sb.append("    ").append(key).append(": ").append(data1.get(key)).append("\n");
+                result.add(toMap(key, "REMOVED", v1, v2));
+            } else if (v1 == null || !v1.equals(v2)) {
+                result.add(toMap(key, "UPDATED", v1, v2));
             } else {
-                sb.append("  - ").append(key).append(": ").append(data1.get(key)).append("\n");
-                sb.append("  + ").append(key).append(": ").append(data2.get(key)).append("\n");
+                result.add(toMap(key, "SAME", v1, v2));
             }
+        });
+        switch (style) {
+            case "plain":
+                return new PlainFormatter().format(result);
+            case "json":
+                return new JsonFormatter().format(result);
+            default:
+                return new StylishFormatter().format(result);
         }
-        sb.append("}\n");
-        return sb.toString();
     }
 }
