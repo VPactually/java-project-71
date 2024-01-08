@@ -1,4 +1,6 @@
-package hexlet.code.formatters;
+package hexlet.code.formatters.plainFormatter;
+
+import hexlet.code.formatters.DifferFormatter;
 
 import java.util.ArrayList;
 import java.util.List;

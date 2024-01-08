@@ -2,8 +2,8 @@ package hexlet.test;
 
 import hexlet.code.Differ;
 import hexlet.code.Parser;
-import hexlet.code.formatters.PlainFormatter;
-import hexlet.code.formatters.StylishFormatter;
+import hexlet.code.formatters.plainFormatter.PlainFormatter;
+import hexlet.code.formatters.stylishFormatter.StylishFormatter;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

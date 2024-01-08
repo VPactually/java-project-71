@@ -1,7 +1,7 @@
 package hexlet.code;
 
-import hexlet.code.formatters.PlainFormatter;
-import hexlet.code.formatters.StylishFormatter;
+import hexlet.code.formatters.plainFormatter.PlainFormatter;
+import hexlet.code.formatters.stylishFormatter.StylishFormatter;
 
 import java.util.Map;
 import java.util.Set;
