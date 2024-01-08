@@ -28,11 +28,11 @@ public class ProjectTest {
 
     @BeforeAll
     public static void beforeAll() {
-        pathToFileJson1 = "src/test/resources/file1.json";
-        pathToFileJson2 = "src/test/resources/file2.json";
-        pathToFileYml1 = "src/test/resources/file1.yml";
-        pathToFileYml2 = "src/test/resources/file2.yml";
-        pathToFileYml3 = "src/test/resources/file3.yml";
+        pathToFileJson1 = "src/test/resources/fixtures/file1.json";
+        pathToFileJson2 = "src/test/resources/fixtures/file2.json";
+        pathToFileYml1 = "src/test/resources/fixtures/file1.yml";
+        pathToFileYml2 = "src/test/resources/fixtures/file2.yml";
+        pathToFileYml3 = "src/test/resources/fixtures/file3.yml";
         list = List.of(
                 Map.of("FIELD", "timeout",
                         "STATUS", "UPDATED",
