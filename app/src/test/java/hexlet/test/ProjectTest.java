@@ -1,10 +1,7 @@
 package hexlet.test;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.Differ;
 import hexlet.code.Parser;
-import hexlet.code.formatters.jsonFormatter.JsonFormatter;
 import hexlet.code.formatters.plainFormatter.PlainFormatter;
 import hexlet.code.formatters.stylishFormatter.StylishFormatter;
 import org.junit.jupiter.api.BeforeAll;
@@ -98,7 +95,7 @@ public class ProjectTest {
                 + "  - setting3: true\n"
                 + "  + setting3: none\n"
                 + "}";
-        var actual = Differ.generate(Parser.parse(pathToFileJson1), Parser.parse(pathToFileJson2), "stylish");
+        var actual = Differ.generate(pathToFileJson1, pathToFileJson2, "stylish");
 
         assertThat(actual).isEqualTo(expected);
     }
@@ -119,16 +116,45 @@ public class ProjectTest {
                 + "Property 'setting2' was updated. From 200 to 300\n"
                 + "Property 'setting3' was updated. From true to 'none'\n";
 
-        var actual = Differ.generate(Parser.parse(pathToFileJson1), Parser.parse(pathToFileJson2), "plain");
+        var actual = Differ.generate(pathToFileJson1, pathToFileJson2, "plain");
 
         assertThat(actual).isEqualTo(expected);
     }
 
     @Test
-    public void testDifferJson() throws JsonProcessingException {
-        var mapper = new ObjectMapper();
-        var expected = mapper.writeValueAsString(list);
-        var actual = new JsonFormatter().format(list);
+    public void testDifferJson() {
+        var expected = "[{"
+                + "\"FIELD\":\"chars1\",\"NEW_VALUE\":[\"a\",\"b\",\"c\"],"
+                + "\"OLD_VALUE\":[\"a\",\"b\",\"c\"],\"STATUS\":\"SAME\"},"
+                + "{\"FIELD\":\"chars2\",\"NEW_VALUE\":false,"
+                + "\"OLD_VALUE\":[\"d\",\"e\",\"f\"],\"STATUS\":\"UPDATED\"},"
+                + "{\"FIELD\":\"checked\",\"NEW_VALUE\":true,"
+                + "\"OLD_VALUE\":false,\"STATUS\":\"UPDATED\"},"
+                + "{\"FIELD\":\"default\",\"NEW_VALUE\":[\"value1\",\"value2\"],"
+                + "\"OLD_VALUE\":null,\"STATUS\":\"UPDATED\"},"
+                + "{\"FIELD\":\"id\",\"NEW_VALUE\":null,"
+                + "\"OLD_VALUE\":45,\"STATUS\":\"UPDATED\"},"
+                + "{\"FIELD\":\"key1\",\"NEW_VALUE\":null,"
+                + "\"OLD_VALUE\":\"value1\",\"STATUS\":\"REMOVED\"},"
+                + "{\"FIELD\":\"key2\",\"NEW_VALUE\":\"value2\","
+                + "\"OLD_VALUE\":null,\"STATUS\":\"ADDED\"},"
+                + "{\"FIELD\":\"numbers1\",\"NEW_VALUE\":[1,2,3,4],"
+                + "\"OLD_VALUE\":[1,2,3,4],\"STATUS\":\"SAME\"},"
+                + "{\"FIELD\":\"numbers2\",\"NEW_VALUE\":[22,33,44,55],"
+                + "\"OLD_VALUE\":[2,3,4,5],\"STATUS\":\"UPDATED\"},"
+                + "{\"FIELD\":\"numbers3\",\"NEW_VALUE\":null,"
+                + "\"OLD_VALUE\":[3,4,5],\"STATUS\":\"REMOVED\"},"
+                + "{\"FIELD\":\"numbers4\",\"NEW_VALUE\":[4,5,6],"
+                + "\"OLD_VALUE\":null,\"STATUS\":\"ADDED\"},"
+                + "{\"FIELD\":\"obj1\",\"NEW_VALUE\":{\"nestedKey\":\"value\",\"isNested\":true},"
+                + "\"OLD_VALUE\":null,\"STATUS\":\"ADDED\"},"
+                + "{\"FIELD\":\"setting1\",\"NEW_VALUE\":\"Another value\","
+                + "\"OLD_VALUE\":\"Some value\",\"STATUS\":\"UPDATED\"},"
+                + "{\"FIELD\":\"setting2\",\"NEW_VALUE\":300,"
+                + "\"OLD_VALUE\":200,\"STATUS\":\"UPDATED\"},"
+                + "{\"FIELD\":\"setting3\",\"NEW_VALUE\":\"none\","
+                + "\"OLD_VALUE\":true,\"STATUS\":\"UPDATED\"}]";
+        var actual = Differ.generate(pathToFileJson1, pathToFileJson2, "json");
 
         assertThat(actual).isEqualTo(expected);
     }

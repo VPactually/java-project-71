@@ -22,7 +22,13 @@ public class Differ {
         return res;
     }
 
-    public static String generate(Map<String, Object> data1, Map<String, Object> data2, String style) {
+    public static String generate(String filepath1, String filepath2) {
+        return generate(filepath1, filepath2, App.getFormat());
+    }
+
+    public static String generate(String filepath1, String filepath2, String style) {
+        var data1 = Parser.parse(filepath1);
+        var data2 = Parser.parse(filepath2);
         Set<String> keys = new TreeSet<>(data1.keySet());
         List<Map<String, Object>> result = new ArrayList<>();
         keys.addAll(data2.keySet());

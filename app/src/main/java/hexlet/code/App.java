@@ -21,9 +21,7 @@ public class App implements Callable<String> {
 
     @Override
     public String call() {
-        var data1 = Parser.parse(filepath1);
-        var data2 = Parser.parse(filepath2);
-        var genDiff = Differ.generate(data1, data2, format);
+        var genDiff = Differ.generate(filepath1, filepath2);
         System.out.println(genDiff);
         return genDiff;
     }
@@ -33,8 +31,7 @@ public class App implements Callable<String> {
         CommandLine cmd = new CommandLine(app);
         cmd.execute(args);
 
-//        cmd.execute("D:\\Java\\0.Projects\\java-project-71\\app\\src\\main\\resources\\file1.json",
-//                "src\\main\\resources\\file2.json");
+//        cmd.execute("src/main/resources/file1.json","src/main/resources/file2.json");
 
 //        cmd.execute("D:\\Java\\0.Projects\\java-project-71\\app\\src\\main\\resources\\file1.yml",
 //                "src\\main\\resources\\file2.yml");
