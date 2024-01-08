@@ -28,13 +28,10 @@ public class PlainFormatter implements DifferFormatter {
         var classes = new ArrayList<Object>(List.of(Integer.class, Boolean.class, String.class));
         classes.add(null);
         result.forEach(map -> {
-            var status = map.get("STATUS");
             var key = map.get("FIELD").toString();
-            var oldVal = map.get("OLD_VALUE");
-            var newVal = map.get("NEW_VALUE");
-            oldVal = valid(oldVal, classes);
-            newVal = valid(newVal, classes);
-            switch (status.toString()) {
+            var oldVal = valid(map.get("OLD_VALUE"), classes);
+            var newVal = valid(map.get("NEW_VALUE"), classes);
+            switch (map.get("STATUS").toString()) {
                 case "ADDED":
                     sb.append(String.format("Property '%s' was added with value: %s\n", key, newVal));
                     break;
@@ -47,7 +44,7 @@ public class PlainFormatter implements DifferFormatter {
                 case "SAME":
                     break;
                 default:
-                    throw new IllegalArgumentException("Unsupported status: " + status);
+                    throw new IllegalArgumentException("Unsupported status: " + map.get("STATUS"));
             }
         });
         return sb.toString();
