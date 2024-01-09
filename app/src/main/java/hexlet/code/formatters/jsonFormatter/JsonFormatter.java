@@ -12,12 +12,11 @@ public class JsonFormatter implements DifferFormatter {
     @Override
     public String format(List<Map<String, Object>> result) {
         var mapper = new ObjectMapper();
-        String json = null;
         try {
-            json = mapper.writeValueAsString(result);
+            return mapper.writeValueAsString(result);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
+            return null;
         }
-        return json;
     }
 }
