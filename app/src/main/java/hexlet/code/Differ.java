@@ -23,7 +23,12 @@ public class Differ {
     }
 
     public static String generate(String filepath1, String filepath2) {
-        return generate(filepath1, filepath2, App.getFormat());
+        try {
+            return generate(filepath1, filepath2, App.getFormat());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public static String generate(String filepath1, String filepath2, String style) {
