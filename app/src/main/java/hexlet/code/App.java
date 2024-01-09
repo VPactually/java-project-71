@@ -22,11 +22,7 @@ public class App implements Callable<String> {
     @Override
     public String call() {
         String genDiff = "";
-        try {
-            genDiff = Differ.generate(filepath1, filepath2);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        genDiff = Differ.generate(filepath1, filepath2);
         System.out.println(genDiff);
         return genDiff;
     }

@@ -27,7 +27,7 @@ public class Differ {
             return generate(filepath1, filepath2, App.getFormat());
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return generate(filepath1, filepath2, App.getFormat());
         }
     }
 
