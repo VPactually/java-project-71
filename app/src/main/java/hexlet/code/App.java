@@ -33,7 +33,7 @@ public class App implements Callable<String> {
         cmd.execute(args);
 
 //        cmd.execute("src/main/resources/file1.json","src/main/resources/file2.json");
-
+//
 //        cmd.execute("D:\\Java\\0.Projects\\java-project-71\\app\\src\\main\\resources\\file1.yml",
 //                "src\\main\\resources\\file2.yml");
     }

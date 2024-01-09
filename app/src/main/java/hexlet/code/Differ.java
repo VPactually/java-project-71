@@ -24,7 +24,7 @@ public class Differ {
 
     public static String generate(String filepath1, String filepath2) {
         try {
-            return generate(filepath1, filepath2, App.getFormat());
+            return generate(filepath1, filepath2, "stylish");
         } catch (Exception e) {
             e.printStackTrace();
             return generate(filepath1, filepath2, App.getFormat());
