@@ -33,13 +33,13 @@ public class PlainFormatter implements DifferFormatter {
             var newVal = valid(map.get("NEW_VALUE"), classes);
             switch (map.get("STATUS").toString()) {
                 case "ADDED":
-                    sb.append(String.format("\nProperty '%s' was added with value: %s", key, newVal));
+                    sb.append(String.format("Property '%s' was added with value: %s\n", key, newVal));
                     break;
                 case "UPDATED":
-                    sb.append(String.format("\nProperty '%s' was updated. From %s to %s", key, oldVal, newVal));
+                    sb.append(String.format("Property '%s' was updated. From %s to %s\n", key, oldVal, newVal));
                     break;
                 case "REMOVED":
-                    sb.append(String.format("\nProperty '%s' was removed", key));
+                    sb.append(String.format("Property '%s' was removed\n", key));
                     break;
                 case "SAME":
                     break;
@@ -47,6 +47,6 @@ public class PlainFormatter implements DifferFormatter {
                     throw new IllegalArgumentException("Unsupported status: " + map.get("STATUS"));
             }
         });
-        return sb.toString();
+        return sb.toString().trim();
     }
 }

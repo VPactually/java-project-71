@@ -114,7 +114,7 @@ public class ProjectTest {
                 + "Property 'obj1' was added with value: [complex value]\n"
                 + "Property 'setting1' was updated. From 'Some value' to 'Another value'\n"
                 + "Property 'setting2' was updated. From 200 to 300\n"
-                + "Property 'setting3' was updated. From true to 'none'\n";
+                + "Property 'setting3' was updated. From true to 'none'";
 
         var actual = Differ.generate(pathToFileJson1, pathToFileJson2, "plain");
 
@@ -221,7 +221,7 @@ public class ProjectTest {
         String actual = res.format(list);
         String expected = "Property 'timeout' was updated. From 50 to 20\n"
                 + "Property 'chars4' was added with value: [complex value]\n"
-                + "Property 'key1' was removed\n";
+                + "Property 'key1' was removed";
 
         assertThat(actual).isEqualTo(expected);
     }
