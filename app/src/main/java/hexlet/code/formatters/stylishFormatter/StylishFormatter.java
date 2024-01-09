@@ -5,7 +5,7 @@ import hexlet.code.formatters.DifferFormatter;
 import java.util.List;
 import java.util.Map;
 
-public class StylishFormatter implements DifferFormatter {
+public final class StylishFormatter implements DifferFormatter {
     public static void stylishFormat(StringBuilder sb, String key, String indicator, Object value) {
         sb.append(String.format("  %s %s: %s\n", indicator, key, value));
     }

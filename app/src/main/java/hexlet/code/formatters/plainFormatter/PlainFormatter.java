@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class PlainFormatter implements DifferFormatter {
+public final class PlainFormatter implements DifferFormatter {
 //    public static void plainFormatter(StringBuilder sb, String key, Object oldValue, Object newValue) {
 //        return sb.append(String.format("Property '%s' "))
 //    }
