@@ -36,8 +36,8 @@ public class ProjectTest {
         list = List.of(
                 Map.of("FIELD", "timeout",
                         "STATUS", "UPDATED",
-                        "NEW_VALUE", 20,
-                        "OLD_VALUE", 50),
+                        "NEW_VALUE", "newVal",
+                        "OLD_VALUE", "oldVal"),
                 Map.of("FIELD", "chars4",
                         "STATUS", "ADDED",
                         "NEW_VALUE", new ArrayList<>(List.of("a", "b", "c")),
@@ -167,13 +167,21 @@ public class ProjectTest {
         data1.put("chars2", new ArrayList<>(List.of("d", "e", "f")));
         data1.put("checked", false);
         data1.put("default", null);
-        data1.put("id", 45);
+        data1.put("id", Integer.parseInt("45"));
         data1.put("key1", "value1");
-        data1.put("numbers1", new ArrayList<>(List.of(1, 2, 3, 4)));
-        data1.put("numbers2", new ArrayList<>(List.of(2, 3, 4, 5)));
-        data1.put("numbers3", new ArrayList<>(List.of(3, 4, 5)));
+        data1.put("numbers1", new ArrayList<>(List.of(Integer.parseInt("1"),
+                Integer.parseInt("2"),
+                Integer.parseInt("3"),
+                Integer.parseInt("4"))));
+        data1.put("numbers2", new ArrayList<>(List.of(Integer.parseInt("2"),
+                Integer.parseInt("3"),
+                Integer.parseInt("4"),
+                Integer.parseInt("5"))));
+        data1.put("numbers3", new ArrayList<>(List.of(Integer.parseInt("3"),
+                Integer.parseInt("4"),
+                Integer.parseInt("5"))));
         data1.put("setting1", "Some value");
-        data1.put("setting2", 200);
+        data1.put("setting2", Integer.parseInt("200"));
         data1.put("setting3", true);
 
         assertThat(Parser.parse(pathToFileJson1)).isEqualTo(data1);
@@ -189,11 +197,19 @@ public class ProjectTest {
         data2.put("default", new ArrayList<>(List.of("value1", "value2")));
         data2.put("id", null);
         data2.put("key2", "value2");
-        data2.put("numbers1", new ArrayList<>(List.of(1, 2, 3, 4)));
-        data2.put("numbers2", new ArrayList<>(List.of(22, 33, 44, 55)));
-        data2.put("numbers4", new ArrayList<>(List.of(4, 5, 6)));
+        data2.put("numbers1", new ArrayList<>(List.of(Integer.parseInt("1"),
+                Integer.parseInt("2"),
+                Integer.parseInt("3"),
+                Integer.parseInt("4"))));
+        data2.put("numbers2", new ArrayList<>(List.of(Integer.parseInt("22"),
+                Integer.parseInt("33"),
+                Integer.parseInt("44"),
+                Integer.parseInt("55"))));
+        data2.put("numbers4", new ArrayList<>(List.of(Integer.parseInt("4"),
+                Integer.parseInt("5"),
+                Integer.parseInt("6"))));
         data2.put("setting1", "Another value");
-        data2.put("setting2", 300);
+        data2.put("setting2", Integer.parseInt("300"));
         data2.put("setting3", "none");
         data2.put("obj1", new LinkedHashMap<>(Map.of("nestedKey", "value", "isNested", true)));
 
@@ -208,7 +224,7 @@ public class ProjectTest {
 
     @Test
     public void testStylish() {
-        String expected = "{\n  - timeout: 50\n  + timeout: 20\n  + chars4: [a, b, c]\n"
+        String expected = "{\n  - timeout: oldVal\n  + timeout: newVal\n  + chars4: [a, b, c]\n"
                 + "  - key1: value1\n    chars1: [a, b, c]\n}";
         var res = new StylishFormatter();
         String actual = res.format(list);
@@ -219,7 +235,7 @@ public class ProjectTest {
     public void testPlain() {
         var res = new PlainFormatter();
         String actual = res.format(list);
-        String expected = "Property 'timeout' was updated. From 50 to 20\n"
+        String expected = "Property 'timeout' was updated. From 'oldVal' to 'newVal'\n"
                 + "Property 'chars4' was added with value: [complex value]\n"
                 + "Property 'key1' was removed";
 
