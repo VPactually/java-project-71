@@ -1,6 +1,11 @@
 package hexlet.code;
 
-import java.util.*;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.List;
+import java.util.ArrayList;
 
 public class GenDiff {
     public static Map<String, Object> toMap(String key, String status, Object oldValue, Object newValue) {
@@ -12,7 +17,7 @@ public class GenDiff {
         return res;
     }
 
-    public static List<Map<String, Object>> genDiff(Map<String, Object> data1, Map<String, Object> data2 ) {
+    public static List<Map<String, Object>> genDiff(Map<String, Object> data1, Map<String, Object> data2) {
         Set<String> keys = new TreeSet<>(data1.keySet());
         List<Map<String, Object>> result = new ArrayList<>();
         keys.addAll(data2.keySet());

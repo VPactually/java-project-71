@@ -1,10 +1,6 @@
 package hexlet.code;
 
 import hexlet.code.formatters.BaseFormatter;
-import hexlet.code.formatters.JsonFormatter;
-import hexlet.code.formatters.PlainFormatter;
-import hexlet.code.formatters.StylishFormatter;
-
 
 public class Differ {
 
