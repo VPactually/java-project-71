@@ -1,16 +1,14 @@
-package hexlet.code.formatters.stylishFormatter;
+package hexlet.code.formatters;
 
-import hexlet.code.formatters.DifferFormatter;
 
 import java.util.List;
 import java.util.Map;
 
-public final class StylishFormatter implements DifferFormatter {
+public final class StylishFormatter {
     public static void stylishFormat(StringBuilder sb, String key, String indicator, Object value) {
         sb.append(String.format("  %s %s: %s\n", indicator, key, value));
     }
 
-    @Override
     public String format(List<Map<String, Object>> result) {
         var sb = new StringBuilder("{\n");
         result.forEach(map -> map.forEach((key, value) -> {

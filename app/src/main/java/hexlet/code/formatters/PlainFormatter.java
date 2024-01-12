@@ -1,12 +1,11 @@
-package hexlet.code.formatters.plainFormatter;
+package hexlet.code.formatters;
 
-import hexlet.code.formatters.DifferFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public final class PlainFormatter implements DifferFormatter {
+public final class PlainFormatter {
 //    public static void plainFormatter(StringBuilder sb, String key, Object oldValue, Object newValue) {
 //        return sb.append(String.format("Property '%s' "))
 //    }
@@ -22,7 +21,6 @@ public final class PlainFormatter implements DifferFormatter {
         return val.toString();
     }
 
-    @Override
     public String format(List<Map<String, Object>> result) {
         var sb = new StringBuilder();
         var classes = new ArrayList<Object>(List.of(Integer.class, Boolean.class, String.class));
