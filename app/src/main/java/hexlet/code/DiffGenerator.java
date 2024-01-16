@@ -1,13 +1,14 @@
 package hexlet.code;
 
 import java.util.Map;
+import java.util.List;
 import java.util.TreeMap;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.Objects;
 
-public class GenDiff {
+public class DiffGenerator {
     public static Map<String, Object> toMap(String key, String status, Object oldValue, Object newValue) {
         var res = new TreeMap<String, Object>();
         res.put("FIELD", key);
@@ -28,7 +29,7 @@ public class GenDiff {
                 result.add(toMap(key, "ADDED", v1, v2));
             } else if (!data2.containsKey(key)) {
                 result.add(toMap(key, "REMOVED", v1, v2));
-            } else if (v1 == null || !v1.equals(v2)) {
+            } else if (!Objects.equals(v1, v2)) {
                 result.add(toMap(key, "UPDATED", v1, v2));
             } else {
                 result.add(toMap(key, "SAME", v1, v2));

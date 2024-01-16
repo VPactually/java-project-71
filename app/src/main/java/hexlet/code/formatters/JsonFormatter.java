@@ -14,7 +14,7 @@ public final class JsonFormatter {
             return mapper.writeValueAsString(result);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-            return null;
+            throw new RuntimeException();
         }
     }
 }

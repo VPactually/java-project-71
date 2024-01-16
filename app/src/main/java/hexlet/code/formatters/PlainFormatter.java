@@ -1,34 +1,30 @@
 package hexlet.code.formatters;
 
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public final class PlainFormatter {
-//    public static void plainFormatter(StringBuilder sb, String key, Object oldValue, Object newValue) {
-//        return sb.append(String.format("Property '%s' "))
-//    }
 
-    public String valid(Object val, ArrayList<Object> classes) {
+    public String valid(Object val) {
+        var complexValue = "[complex value]";
         if (val == null) {
             return null;
+        } else if (val instanceof Map || val instanceof List) {
+            return complexValue;
+        } else if (val instanceof String) {
+            return String.format("'%s'", val);
+        } else {
+            return val.toString();
         }
-        val = val.getClass().equals(String.class)
-                ? String.format("'%s'", val)
-                : val;
-        val = classes.contains(val.getClass()) ? val : "[complex value]";
-        return val.toString();
     }
 
     public String format(List<Map<String, Object>> result) {
         var sb = new StringBuilder();
-        var classes = new ArrayList<Object>(List.of(Integer.class, Boolean.class, String.class));
-        classes.add(null);
         result.forEach(map -> {
             var key = map.get("FIELD").toString();
-            var oldVal = valid(map.get("OLD_VALUE"), classes);
-            var newVal = valid(map.get("NEW_VALUE"), classes);
+            var oldVal = valid(map.get("OLD_VALUE"));
+            var newVal = valid(map.get("NEW_VALUE"));
             switch (map.get("STATUS").toString()) {
                 case "ADDED":
                     sb.append(String.format("Property '%s' was added with value: %s\n", key, newVal));

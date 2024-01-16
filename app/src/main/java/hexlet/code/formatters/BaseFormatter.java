@@ -11,8 +11,10 @@ public class BaseFormatter {
                 return new PlainFormatter().format(result);
             case "json":
                 return new JsonFormatter().format(result);
-            default:
+            case "stylish":
                 return new StylishFormatter().format(result);
+            default:
+                throw new UnsupportedOperationException("Unsupported format: " + style);
         }
-    };
+    }
 }
