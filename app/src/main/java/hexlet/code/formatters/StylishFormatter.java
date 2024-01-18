@@ -11,11 +11,9 @@ public final class StylishFormatter {
 
     public String format(List<Map<String, Object>> result) {
         var sb = new StringBuilder("{\n");
-        result.forEach(map -> map.forEach((key, value) -> {
-            if (!key.equals("STATUS")) {
-                return;
-            }
-            switch (value.toString()) {
+        result.forEach(map -> {
+            String status = map.get("STATUS").toString();
+            switch (status) {
                 case "ADDED":
                     stylishFormat(sb, map.get("FIELD").toString(), "+", map.get("NEW_VALUE"));
                     break;
@@ -30,9 +28,9 @@ public final class StylishFormatter {
                     stylishFormat(sb, map.get("FIELD").toString(), " ", map.get("OLD_VALUE"));
                     break;
                 default:
-                    throw new IllegalArgumentException("Unsupported field: " + value);
+                    throw new IllegalArgumentException("Unsupported field: " + status);
             }
-        }));
+        });
         sb.append("}");
         return sb.toString();
     }
