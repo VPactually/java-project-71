@@ -6,4 +6,4 @@ A console utility that checks the differences between two data structures with a
 [![Maintainability](https://api.codeclimate.com/v1/badges/179a176edd48beeb9c77/maintainability)](https://codeclimate.com/github/VPactually/java-project-71/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/179a176edd48beeb9c77/test_coverage)](https://codeclimate.com/github/VPactually/java-project-71/test_coverage)
 ### Asciinema
-[![asciicast](https://asciinema.org/a/x9M1YiAH6N0jrztv0dcQXaWJX.svg)](https://asciinema.org/a/x9M1YiAH6N0jrztv0dcQXaWJX)
+[![asciicast](https://asciinema.org/a/oRTEtsQNborTGKdr0V35R8s9h.svg)](https://asciinema.org/a/oRTEtsQNborTGKdr0V35R8s9h)
